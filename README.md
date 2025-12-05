@@ -71,3 +71,89 @@ The system uses four core tables:
 Together these tables implement a simple library workflow from user registration → browsing titles → borrowing books → tracking returns.
 
 ---
+
+## Relational Schema
+
+![Library relational schema](Screenshot%202025-12-04%20204530.png)
+
+---
+
+## Test Login Credentials
+
+### **Admin Account**
+
+| Field    | Value           |
+|--------- |-----------------|
+| Email    | **alice@a.com** |
+| Password | **123**         |
+| Role     | **admin**       |
+
+### **Customer Account**
+
+| Field    | Value          |
+|--------- |----------------|
+| Email    | **john@a.com** |
+| Password | **123**        |
+| Role     | **customer**   |
+
+---
+
+## Setup Instructions
+
+1. **Download or Clone the Project**  
+   Clone this repository or download the project as a ZIP file and extract it to a folder on your machine.
+
+2. **Configure the Database**  
+   Open your MySQL / phpMyAdmin environment.  
+   Create the database: `ia637_LibraryManagementSystem`.  
+   Run the SQL script included with the project to create the `Users`, `Titles`, `Books`, and `Loans` tables and insert sample data.
+
+3. **Add Your Database Credentials**  
+   In the project folder, locate `config.example.yml`.  
+   Make a copy and rename it: `config.yml`.  
+   Then fill in your MySQL login details:
+
+   ```yaml
+   db:
+     host: "your_local_host"
+     user: "root"
+     pw: "your_password"
+     db: "your_database_name"
+
+ 4. **Run The Application**
+    
+    Open a terminal or command prompt, navigate to the project folder, and run: python app.py
+    
+    Then open your browser and go to: http://127.0.0.1:5000
+    
+    Log in using one of the test accounts listed in the Test Login Credentials section.
+
+---
+
+## Analytics Dashboard
+
+Our system includes a simple **Analytics Dashboard** that gives the admins (librarians) a quick view of how the library collection is being used. These analytical queries are based on the `Users`, `Titles`, `Books`, and `Loans` tables.
+
+1. **Daily Loan Count**  
+   Shows how many books are checked out on each day.
+    
+   This helps the library understand busy vs. quiet days and plan staffing accordingly.
+
+3. **Top Borrowed Titles (Last 30 Days)**  
+   Lists the titles with the highest number of loans in the last month.  
+   This highlights popular books and can inform purchasing decisions or additional copies.
+
+4. **Active Borrowers**  
+   Counts the number of distinct users who have borrowed at least one book within a chosen time period.  
+   This metric shows how many members are actively using the library, not just registered.
+
+5. **Book Availability Snapshot**  
+   Calculates how many titles currently have at least one available copy versus those that are fully checked out.  
+   This gives a quick sense of overall collection availability and potential bottlenecks in high-demand areas.
+
+All queries are executed inside the Flask routes in `app.py` and the results are presented to librarians as simple tables and summary counts on the admin pages.
+
+
+
+  
+
