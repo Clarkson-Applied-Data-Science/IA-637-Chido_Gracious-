@@ -9,7 +9,10 @@ Gracious Chigome
 
 ---
 ## Overview
-This project is a Library Management System and it lets library staff and customers work with the same central database of users and books, but with different levels of access.
+
+This project is a Library Management System designed for a community library. It gives both staff and customers a simple way to interact with the same central database of users, titles, books, and loans, while enforcing different levels of access based on each user’s role.
+
+The purpose of this Library Management System project is to digitize and streamline core library operations by providing a simple web-based platform for managing books, users, and loans. It allows patrons to search the catalogue, view book details, and manage their own borrowing, while giving librarians/administrators tools to create and update user accounts, maintain the book collection, and track check-outs and returns in real time. Overall, the system aims to replace manual, paper-based processes with an accurate, data-driven application that supports efficient day-to-day management of a community library.
 
 ## Features
 
@@ -152,6 +155,16 @@ Our system includes a simple **Analytics Dashboard** that gives the admins (libr
    This gives a quick sense of overall collection availability and potential bottlenecks in high-demand areas.
 
 All queries are executed inside the Flask routes in `app.py` and the results are presented to librarians as simple tables and summary counts on the admin pages.
+
+## Summary
+
+In short, this project delivers a complete library workflow:
+
+- Patrons discover and borrow books through a simple self-service interface.
+
+- Admins maintain the catalogue, manage member accounts, and track loans/returns.
+
+- All activity is stored in a central database, providing accurate, up-to-date information about the library’s collection and usage.
 
 
 
