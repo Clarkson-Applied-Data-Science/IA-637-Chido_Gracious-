@@ -78,12 +78,14 @@ These summaries help librarians keep the catalogue upto date, see which books ar
 
 ## System Technologies
 
-| Layer              | Technology                                      |
-|--------------------|-------------------------------------------------|
-| Backend            | Python + Flask                                  |
-| Frontend           | HTML, CSS, Jinja2 templates          |
-| Database           | MySQL (`ia637` database; tables for users/books/loans/titles)|
-| Data Access Layer  | Shared `baseObject` framework and entity classes|
+| Layer              | Technology                                                     |
+|--------------------|----------------------------------------------------------------|
+| Backend            | Python + Flask                                                |
+| Frontend           | HTML, CSS, Jinja2 templates                                   |
+| Database           | MySQL (`ia637` database; tables for users/books/loans/titles) |
+| Data Access Layer  | Shared `baseObject` framework and entity classes              |
+| Visualization      | SQL aggregates + Python (Matplotlib) charts for analytics     |
+
 
 
 ## Database Schema
