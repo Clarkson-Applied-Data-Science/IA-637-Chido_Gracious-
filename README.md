@@ -45,6 +45,28 @@ Provides a simple overview of library activity, including:
 
 These summaries help librarians keep the catalogue upto date, see which books are heavily used, understand how the system is being used and quickly spot records that may need attention.
 
+
+## Key SQL and Analytical Queries
+
+| Feature / Use Case | SQL Query (simplified) | Explanation |
+|--------------------|------------------------|------------|
+| User login | ```sql SELECT * FROM Users WHERE email = %s AND password = %s; ``` | Checks whether the entered email and password match a record in the `Users` table. Used on the login form to authenticate admins and customers. |
+| List all users | ```sql SELECT user_id, name, email, role, phone, join_date FROM Users ORDER BY name; ``` | Returns the full list of registered users, sorted by name. Used on the admin “Users” page to view and manage members. |
+| Library catalogue (books with titles) | ```sql SELECT b.Book_ID, t.Title_Name, t.Author, b.Condition, b.availability_status FROM Books b JOIN Titles t ON b.Title_ID = t.Title_ID ORDER BY t.Title_Name; ``` | Combines `Books` and `Titles` so the app can show each physical book copy together with its title and author. Used on the main catalogue/list of books. |
+| Search by title or author | ```sql SELECT t.Title_Name, t.Author, t.ISBN, t.Category FROM Titles t WHERE t.Title_Name LIKE %s OR t.Author LIKE %s; ``` | Searches the `Titles` table using a keyword in either the title or author fields. Used on the customer search page. |
+| Record a new loan | ```sql INSERT INTO Loans (Status, Loan_Date, Return_Date, Book_ID, Member_ID, Staff_ID) VALUES (%s, %s, %s, %s, %s, %s); ``` | Inserts a new row into `Loans` when a librarian checks out a book to a member. Tracks which user borrowed which copy and when it is due. |
+| Update book availability | ```sql UPDATE Books SET availability_status = %s WHERE Book_ID = %s; ``` | Changes a book’s availability (for example from `available` to `checked out` or back again) when a loan is created or returned. |
+| Total registered users (analytics) | ```sql SELECT COUNT(*) AS total_users FROM Users; ``` | Simple aggregate used on the Analytics Dashboard to show how many users are currently registered in the system. |
+| Total books in catalogue (analytics) | ```sql SELECT COUNT(*) AS total_books FROM Books; ``` | Counts all book copies in the `Books` table. Displayed on the dashboard as “Total Books”. |
+| Availability snapshot (available vs. not) | ```sql SELECT availability_status, COUNT(*) AS count FROM Books GROUP BY availability_status; ``` | Groups books by `availability_status` (e.g. `available`, `checked out`, `reserved`) to show how many copies are in each state. Used for the dashboard availability summary. |
+| Daily loan count | ```sql SELECT Loan_Date, COUNT(*) AS daily_loans FROM Loans GROUP BY Loan_Date ORDER BY Loan_Date; ``` | Aggregates the number of loans per day. Used to understand busy vs. quiet days in the library. |
+| Top borrowed titles (last 30 days) | ```sql SELECT t.Title_Name, COUNT(*) AS loans_last_30_days FROM Loans l JOIN Books b ON l.Book_ID = b.Book_ID JOIN Titles t ON b.Title_ID = t.Title_ID WHERE l.Loan_Date >= CURDATE() - INTERVAL 30 DAY GROUP BY t.Title_ID, t.Title_Name ORDER BY loans_last_30_days DESC LIMIT 5; ``` | Counts how many times each title has been borrowed in the last 30 days and returns the top 5. Used on the dashboard to highlight popular books. |
+| Active borrowers (last 30 days) | ```sql SELECT COUNT(DISTINCT Member_ID) AS active_borrowers FROM Loans WHERE Loan_Date >= CURDATE() - INTERVAL 30 DAY; ``` | Counts distinct members who borrowed at least one book in the last 30 days. Used as an “Active Users” metric on the dashboard. |
+
+
+
+
+
 ## System Technologies
 
 | Layer              | Technology                                      |
