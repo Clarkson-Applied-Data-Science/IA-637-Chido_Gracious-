@@ -46,6 +46,15 @@ Provides a simple overview of library activity, including:
 These summaries help librarians keep the catalogue upto date, see which books are heavily used, understand how the system is being used and quickly spot records that may need attention.
 
 
+### Analytics Summary View
+
+![Analytics dashboard summary](images/analytics.png)
+
+### Most Borrowed Titles View
+
+![Most borrowed titles chart](images/mostborrowed.png)
+
+
 ## Key SQL and Analytical Queries
 
 | Feature / Use Case | SQL Query (simplified) | Explanation |
@@ -99,7 +108,7 @@ Together these tables implement a simple library workflow from user registration
 
 ## Relational Schema
 
-![Library relational schema](Screenshot%202025-12-04%20204530.png)
+![Library relational schema](images/schema.png)
 
 ---
 
