@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+  <head>
+    <title>My Profile</title>
+  </head>
+  <body>
+    <h1>My Profile</h1>
+
+    {% if msg %}
+      <p style="color: green;">{{ msg }}</p>
+    {% endif %}
+
+    {% if obj.errors %}
+      <ul style="color:red;">
+        {% for e in obj.errors %}
+          <li>{{ e }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <form method="post">
+      <p>
+        <label>Name:</label><br>
+        <input type="text" name="name" value="{{ obj.data[0].name }}">
+      </p>
+      <p>
+        <label>Phone:</label><br>
+        <input type="text" name="phone" value="{{ obj.data[0].phone }}">
+      </p>
+      <p>
+        <label>Join date (YYYY-MM-DD):</label><br>
+        <input type="text" name="join_date" value="{{ obj.data[0].join_date }}">
+      </p>
+      <p>
+        <button type="submit">Save</button>
+        <a href="{{ url_for('main') }}">Back to menu</a>
+      </p>
+    </form>
+  </body>
+</html>

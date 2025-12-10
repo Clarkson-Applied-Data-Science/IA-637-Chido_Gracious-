@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Users</title>
+</head>
+<body>
+    <h1>All Users</h1>
+
+    <p>
+        <a href="{{ url_for('main') }}">Back to Main</a> |
+        <a href="{{ url_for('logout') }}">Log Out</a>
+    </p>
+
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Phone</th>
+            <th>Join Date</th>
+            <th>Actions</th>
+        </tr>
+        {% for u in users %}
+        <tr>
+            <td>{{ u['user_id'] }}</td>
+            <td>{{ u['name'] }}</td>
+            <td>{{ u['email'] }}</td>
+            <td>{{ u['role'] }}</td>
+            <td>{{ u['phone'] }}</td>
+            <td>{{ u['join_date'] }}</td>
+            <td>
+                <a href="{{ url_for('edit_user', user_id=u['user_id']) }}">Edit</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

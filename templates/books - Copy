@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Books</title>
+  </head>
+  <body>
+    <h1>Library Books</h1>
+
+    {% if msg %}
+      <p style="color: green;">{{ msg }}</p>
+    {% endif %}
+
+    <p><a href="{{ url_for('main') }}">Back to main menu</a></p>
+
+    <table border="1" cellpadding="4">
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Condition</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+      {% for b in books %}
+        <tr>
+          <td>{{ b.Book_ID }}</td>
+          <td>{{ b.Title }}</td>
+          <td>{{ b.Author }}</td>
+          <td>{{ b.Condition }}</td>
+          <td>{{ b.availability_status }}</td>
+          <td>
+            {% if me.role == 'admin' %}
+              <a href="{{ url_for('edit_book', book_id=b.Book_ID) }}">Edit</a>
+            {% endif %}
+            {% if me.role != 'admin' and b.availability_status == 'Available' %}
+              <a href="{{ url_for('borrow_book', book_id=b.Book_ID) }}">Borrow</a>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>

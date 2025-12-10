@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Register</title>
+  </head>
+  <body>
+    <h1>Create an account</h1>
+
+    {% if obj.errors %}
+      <ul style="color:red;">
+        {% for e in obj.errors %}
+          <li>{{ e }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <form method="post">
+      <p>
+        <label>Name:</label><br>
+        <input type="text" name="name" value="{{ request.form.name }}">
+      </p>
+      <p>
+        <label>Email:</label><br>
+        <input type="text" name="email" value="{{ request.form.email }}">
+      </p>
+      <p>
+        <label>Password:</label><br>
+        <input type="password" name="password">
+      </p>
+      <p>
+        <label>Confirm password:</label><br>
+        <input type="password" name="password2">
+      </p>
+      <p>
+        <button type="submit">Register</button>
+        <a href="{{ url_for('login') }}">Back to login</a>
+      </p>
+    </form>
+  </body>
+</html>

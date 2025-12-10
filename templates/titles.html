@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Titles</title>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1f3847, #0a2531);
+            color: #fff;
+            margin: 0;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1100px;
+            margin: 40px auto;
+            background: #ffffff;
+            color: #000;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 5px 18px rgba(0,0,0,0.25);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 30px;
+            color: #0d4056;
+            margin-bottom: 25px;
+        }
+
+        .top-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .top-buttons a {
+            background: #0d4056;
+            color: white;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .add-btn {
+            background: #006fa8 !important;
+        }
+
+        .top-buttons a:hover {
+            opacity: 0.85;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background: #0d4056;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background: #f7f9fb;
+        }
+
+        a.action-btn {
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .edit-btn {
+            background: #bb8600;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>📚 Manage Book Titles</h1>
+
+    <div class="top-buttons">
+        <a href="/main"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a>
+
+        {% if session['user']['role'] == 'admin' %}
+            <a href="/titles/new" class="add-btn">
+                <i class="fa-solid fa-plus"></i> Add New Title
+            </a>
+        {% endif %}
+    </div>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>ISBN</th>
+            <th>Category</th>
+            {% if session['user']['role'] == 'admin' %}
+                <th>Actions</th>
+            {% endif %}
+        </tr>
+
+        {% for t in titles %}
+        <tr>
+            <td>{{ t.Title_ID }}</td>
+            <td>{{ t.Title_Name }}</td>
+            <td>{{ t.Author }}</td>
+            <td>{{ t.Isbn }}</td>
+            <td>{{ t.Category }}</td>
+
+            {% if session['user']['role'] == 'admin' %}
+            <td>
+                <a class="action-btn edit-btn"
+                   href="/titles/edit/{{ t.Title_ID }}">
+                    <i class="fa-solid fa-pen-to-square"></i> Edit
+                </a>
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+</body>
+</html>

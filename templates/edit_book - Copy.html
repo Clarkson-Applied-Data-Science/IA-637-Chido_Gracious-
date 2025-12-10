@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Edit Book</title>
+</head>
+<body>
+    <h1>Edit Book {{ book['Book_ID'] }}</h1>
+
+    <p>
+        <a href="{{ url_for('books_list') }}">Back to Books</a> |
+        <a href="{{ url_for('logout') }}">Log Out</a>
+    </p>
+
+    <p>
+        <strong>Title:</strong> {{ book['Title_Name'] }}<br>
+        <strong>Author:</strong> {{ book['Author'] }}<br>
+        <strong>ISBN:</strong> {{ book['Isbn'] }}<br>
+        <strong>Category:</strong> {{ book['Category'] }}<br>
+        <strong>Date Added:</strong> {{ book['Date_Added'] }}
+    </p>
+
+    <form method="post">
+        <label>Condition:</label><br>
+        <input type="text" name="condition" value="{{ book['Condition'] }}"><br><br>
+
+        <label>Availability:</label><br>
+        <select name="availability_status">
+            <option value="Available" {% if book['availability_status'] == 'Available' %}selected{% endif %}>Available</option>
+            <option value="Checked Out" {% if book['availability_status'] == 'Checked Out' %}selected{% endif %}>Checked Out</option>
+            <option value="Reserved" {% if book['availability_status'] == 'Reserved' %}selected{% endif %}>Reserved</option>
+            <option value="Lost" {% if book['availability_status'] == 'Lost' %}selected{% endif %}>Lost</option>
+        </select><br><br>
+
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>

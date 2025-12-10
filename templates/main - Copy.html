@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Main Menu</title>
+  </head>
+  <body>
+    <h1>Welcome, {{ me.name }}!</h1>
+
+    <ul>
+      {% if me.role == 'admin' %}
+        <li><a href="{{ url_for('books') }}">Manage books & availability</a></li>
+        <li><a href="{{ url_for('manage_user') }}">Manage users</a></li>
+      {% else %}
+        <li><a href="{{ url_for('profile') }}">My profile</a></li>
+        <li><a href="{{ url_for('books') }}">Browse books</a></li>
+      {% endif %}
+      <li><a href="{{ url_for('logout') }}">Log out</a></li>
+    </ul>
+  </body>
+</html>

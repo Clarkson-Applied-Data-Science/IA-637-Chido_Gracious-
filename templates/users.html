@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Library Patrons</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #2b5876, #4e4376);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 15px 30px rgba(0,0,0,0.25);
+        }
+
+        h1 {
+            color: #2b5876;
+            margin-bottom: 10px;
+        }
+
+        .top-links {
+            margin-bottom: 20px;
+        }
+
+        .top-links a {
+            display: inline-block;
+            margin-right: 15px;
+            background: #2b5876;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .top-links a:hover {
+            background: #1f3f55;
+        }
+
+        .add-user {
+            margin-bottom: 15px;
+        }
+
+        .add-user a {
+            background: #1f9d55;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .add-user a:hover {
+            background: #157a43;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th {
+            background: #2b5876;
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background: #f5f7fa;
+        }
+
+        .edit-btn {
+            color: #2b5876;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .edit-btn:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>👥 Library Patrons</h1>
+
+    <div class="top-links">
+        <a href="/main">🏠 Home</a>
+        <a href="/logout">🚪 Log Out</a>
+    </div>
+
+    <div class="add-user">
+        <a href="{{ url_for('add_user') }}" class="btn btn-success">+ Add Patron</a>
+
+    </div>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Phone</th>
+            <th>Join Date</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for u in users %}
+        <tr>
+            <td>{{ u.user_id }}</td>
+            <td>{{ u.name }}</td>
+            <td>{{ u.email }}</td>
+            <td>{{ u.role }}</td>
+            <td>{{ u.phone }}</td>
+            <td>{{ u.join_date }}</td>
+            <td>
+                <a class="action-btn edit-btn"
+   href="{{ url_for('edit_user', user_id=u.user_id) }}">
+   <i class="fa-solid fa-pen-to-square"></i> Edit
+</a>
+
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+</body>
+</html>

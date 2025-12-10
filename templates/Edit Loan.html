@@ -1,0 +1,27 @@
+<h1>Edit Loan {{ loan.Loan_ID }}</h1>
+
+<form method="post">
+    <label>Status</label>
+    <select name="status">
+        <option value="On Loan" {% if loan.Status == 'On Loan' %}selected{% endif %}>On Loan</option>
+        <option value="Returned" {% if loan.Status == 'Returned' %}selected{% endif %}>Returned</option>
+        <option value="Overdue" {% if loan.Status == 'Overdue' %}selected{% endif %}>Overdue</option>
+    </select>
+
+    <br><br>
+
+    <label>Loan Date</label>
+    <input type="date" name="loan_date" value="{{ loan.Loan_Date }}">
+
+    <br><br>
+
+    <label>Return Date</label>
+    <input type="date" name="return_date" value="{{ loan.Return_Date }}">
+
+    <br><br>
+
+    <button type="submit">Save Changes</button>
+</form>
+
+<br>
+<a href="/loans">Back to Loans</a>

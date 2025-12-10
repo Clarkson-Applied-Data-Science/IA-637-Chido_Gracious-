@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #2b5876, #4e4376);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 25px rgba(0,0,0,0.25);
+        }
+
+        h1 {
+            color: #2b5876;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: #2b5876;
+            margin-top: 25px;
+        }
+
+        .profile-info p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        hr {
+            margin: 30px 0;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            margin-top: 15px;
+            background: #2b5876;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background: #1f3f55;
+        }
+
+        .links {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .links a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #2b5876;
+            margin: 0 10px;
+        }
+
+        .no-books {
+            font-style: italic;
+            color: gray;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #bbb;
+            text-align: center;
+        }
+
+        th {
+            background: #2b5876;
+            color: white;
+        }
+
+        .countdown {
+            font-weight: bold;
+            color: #b83232;
+        }
+
+        .alert {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .alert-success {
+            background: #008037;
+            color: white;
+        }
+
+        .alert-error {
+            background: #b83232;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>👤 My Profile</h1>
+
+    <div class="profile-info">
+        <p><strong>Name:</strong> {{ user.name }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Phone:</strong> {{ user.phone }}</p>
+        <p><strong>Member Since:</strong> {{ user.join_date }}</p>
+    </div>
+
+    <hr>
+
+    <h3>📚 Books You Borrowed</h3>
+    {% if borrowed and borrowed|length > 0 %}
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Due Date</th>
+            <th>Days Left</th>
+        </tr>
+        {% for bk in borrowed %}
+        <tr>
+            <td>{{ bk.title }}</td>
+            <td>{{ bk.due_date }}</td>
+            <td class="countdown" data-date="{{ bk.due_date }}"></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p class="no-books">No active loans.</p>
+    {% endif %}
+
+    <hr>
+
+    <h3>📞 Update Phone Number</h3>
+    <form method="post" action="/update_phone">
+        <label>New Phone Number</label>
+        <input type="text" name="phone" required>
+        <button type="submit">Update Phone</button>
+    </form>
+
+    <hr>
+
+    <h3>🔒 Change Password</h3>
+    <form method="post" action="/update_password">
+        <label>Current Password</label>
+        <input type="password" name="current_password" required>
+
+        <label>New Password</label>
+        <input type="password" name="new_password" required>
+
+        <label>Confirm New Password</label>
+        <input type="password" name="confirm_password" required>
+
+        <button type="submit">Change Password</button>
+    </form>
+
+    {% if msg %}
+    <div class="alert alert-success">{{ msg }}</div>
+    {% endif %}
+
+    <div class="links">
+        <a href="/main">🏠 Home</a>
+        <a href="/logout">🚪 Logout</a>
+    </div>
+</div>
+
+<script>
+// Countdown logic for each due date
+document.querySelectorAll('.countdown').forEach(function (cd) {
+    const dueDate = new Date(cd.dataset.date);
+    const now = new Date();
+    const diffTime = dueDate - now;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    cd.textContent = diffDays >= 0 ? diffDays + " days" : "Overdue!";
+});
+</script>
+
+</body>
+</html>

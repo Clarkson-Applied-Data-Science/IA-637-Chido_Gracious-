@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+    <title>Edit Book</title>
+</head>
+<body>
+<h1>Edit Book {{ book.Book_ID }}</h1>
+
+<p>
+    <a href="{{ url_for('books') }}">Back to Books</a> |
+    <a href="{{ url_for('main') }}">Back to Main</a>
+</p>
+
+<form method="post">
+    <p>
+        Title: {{ book.Title }}<br>
+        Author: {{ book.Author }}
+    </p>
+    <p>
+        Condition:
+        <select name="Condition">
+            <option value="New" {% if book.Condition == 'New' %}selected{% endif %}>New</option>
+            <option value="Good" {% if book.Condition == 'Good' %}selected{% endif %}>Good</option>
+            <option value="Fair" {% if book.Condition == 'Fair' %}selected{% endif %}>Fair</option>
+        </select>
+    </p>
+    <p>
+        Availability:
+        <select name="availability_status">
+            <option value="Available" {% if book.availability_status == 'Available' %}selected{% endif %}>Available</option>
+            <option value="On Loan" {% if book.availability_status == 'On Loan' %}selected{% endif %}>On Loan</option>
+            <option value="Reserved" {% if book.availability_status == 'Reserved' %}selected{% endif %}>Reserved</option>
+        </select>
+    </p>
+    <p>
+        <button type="submit">Save</button>
+    </p>
+</form>
+</body>
+</html>

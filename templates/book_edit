@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Edit Book</title>
+  </head>
+  <body>
+    <h1>Edit Book #{{ book.Book_ID }}</h1>
+    <p><strong>{{ book.Title }}</strong> by {{ book.Author }}</p>
+
+    <form method="post">
+      <p>
+        <label>Condition:</label><br>
+        <input type="text" name="Condition" value="{{ book.Condition }}">
+      </p>
+      <p>
+        <label>Availability status:</label><br>
+        <select name="availability_status">
+          {% set current = book.availability_status %}
+          {% for opt in ['Available', 'On Loan', 'Lost', 'Damaged'] %}
+            <option value="{{ opt }}" {% if opt == current %}selected{% endif %}>
+              {{ opt }}
+            </option>
+          {% endfor %}
+        </select>
+      </p>
+      <p>
+        <button type="submit">Save</button>
+        <a href="{{ url_for('books') }}">Cancel</a>
+      </p>
+    </form>
+  </body>
+</html>

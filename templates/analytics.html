@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Library Analytics</title>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #163342, #0a2531);
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto 60px auto;
+            background: #ffffff;
+            color: #111;
+            border-radius: 14px;
+            padding: 25px 30px 40px 30px;
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #0d4056;
+            font-size: 28px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .top-bar a {
+            text-decoration: none;
+            color: #0d4056;
+            font-weight: bold;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 20px 0 30px 0;
+        }
+
+        .stat-card {
+            background: #0d4056;
+            color: #fff;
+            padding: 18px 14px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-card h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .stat-card .value {
+            margin-top: 8px;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr);
+            gap: 25px;
+            margin-top: 15px;
+        }
+
+        .chart-card {
+            background: #f5f7fa;
+            border-radius: 10px;
+            padding: 16px 18px 10px 18px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .chart-card h3 {
+            margin: 0 0 8px 0;
+            font-size: 18px;
+            color: #0d4056;
+        }
+
+        canvas {
+            width: 100% !important;
+            max-height: 320px;
+        }
+
+        .footer-link {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .footer-link a {
+            text-decoration: none;
+            color: #0d4056;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="top-bar">
+        <a href="/main"><i class="fa-solid fa-arrow-left-long"></i> Back to Dashboard</a>
+        <span style="color:#666;font-size:14px;">Admin analytics overview</span>
+    </div>
+
+    <h1><i class="fa-solid fa-chart-line"></i> Library Analytics</h1>
+
+    <!-- Stats row -->
+    <div class="stat-grid">
+        <div class="stat-card">
+            <h2>📚 Total Books</h2>
+            <div class="value">{{ total_books }}</div>
+        </div>
+
+        <div class="stat-card">
+            <h2>✔️ Available</h2>
+            <div class="value">{{ available_books }}</div>
+        </div>
+
+        <div class="stat-card">
+            <h2>📖 Borrowed</h2>
+            <div class="value">{{ borrowed_books }}</div>
+        </div>
+
+        <div class="stat-card">
+            <h2>🏆 Top Titles Tracked</h2>
+            <div class="value">{{ top_title_labels|length }}</div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="chart-grid">
+        <div class="chart-card">
+            <h3>Borrowing Trend by Month</h3>
+            <canvas id="loanTrendChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h3>Titles by Category</h3>
+            <canvas id="categoryChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-card" style="margin-top:25px;">
+        <h3>Most Borrowed Titles</h3>
+        <canvas id="topTitlesChart"></canvas>
+    </div>
+
+    <div class="footer-link">
+        <a href="/main"><i class="fa-solid fa-house"></i> Back to Dashboard</a>
+    </div>
+</div>
+
+<script>
+    // Data from Flask (already flattened in app.py)
+    const trendLabels = {{ loan_trend_labels | tojson }};
+    const trendValues = {{ loan_trend_values | tojson }};
+
+    const catLabels = {{ category_labels | tojson }};
+    const catValues = {{ category_values | tojson }};
+
+    const topTitleLabels = {{ top_title_labels | tojson }};
+    const topTitleValues = {{ top_title_values | tojson }};
+
+    // ----- Borrowing Trend (Line) -----
+    const loanCtx = document.getElementById('loanTrendChart').getContext('2d');
+    new Chart(loanCtx, {
+        type: 'line',
+        data: {
+            labels: trendLabels,
+            datasets: [{
+                label: 'Books Borrowed',
+                data: trendValues,
+                borderWidth: 2,
+                tension: 0.25,
+                borderColor: '#1abc9c',
+                backgroundColor: 'rgba(26, 188, 156, 0.2)',
+                pointRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { precision: 0 }
+                }
+            }
+        }
+    });
+
+    // ----- Category Breakdown (Pie) -----
+    const catCtx = document.getElementById('categoryChart').getContext('2d');
+    new Chart(catCtx, {
+        type: 'pie',
+        data: {
+            labels: catLabels,
+            datasets: [{
+                data: catValues,
+                backgroundColor: [
+                    '#3498db', '#9b59b6', '#e67e22',
+                    '#1abc9c', '#e74c3c', '#2ecc71'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // ----- Most Borrowed Titles (Horizontal Bar) -----
+    const topCtx = document.getElementById('topTitlesChart').getContext('2d');
+    new Chart(topCtx, {
+        type: 'bar',
+        data: {
+            labels: topTitleLabels,
+            datasets: [{
+                label: 'Times Borrowed',
+                data: topTitleValues,
+                backgroundColor: '#f39c12'
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    ticks: { precision: 0 }
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

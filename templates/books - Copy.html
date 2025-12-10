@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Books</title>
+</head>
+<body>
+    <h1>All Copies / Books</h1>
+
+    <p>
+        <a href="{{ url_for('main') }}">Back to Main</a> |
+        <a href="{{ url_for('logout') }}">Log Out</a>
+    </p>
+
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Book ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>ISBN</th>
+            <th>Category</th>
+            <th>Condition</th>
+            <th>Availability</th>
+            <th>Date Added</th>
+            <th>Actions</th>
+        </tr>
+        {% for b in books %}
+        <tr>
+            <td>{{ b['Book_ID'] }}</td>
+            <td>{{ b['Title_Name'] }}</td>
+            <td>{{ b['Author'] }}</td>
+            <td>{{ b['Isbn'] }}</td>
+            <td>{{ b['Category'] }}</td>
+            <td>{{ b['Condition'] }}</td>
+            <td>{{ b['availability_status'] }}</td>
+            <td>{{ b['Date_Added'] }}</td>
+            <td>
+                <a href="{{ url_for('edit_book', book_id=b['Book_ID']) }}">Edit</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

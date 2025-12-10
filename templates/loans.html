@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Loans</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #2b5876, #4e4376);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 15px 30px rgba(0,0,0,0.25);
+        }
+
+        h1 {
+            color: #2b5876;
+            margin-bottom: 20px;
+        }
+
+        .top-links {
+            margin-bottom: 20px;
+        }
+
+        .top-links a {
+            display: inline-block;
+            margin-right: 15px;
+            background: #2b5876;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .top-links a:hover {
+            background: #1f3f55;
+        }
+
+        .new-loan {
+            margin-bottom: 15px;
+        }
+
+        .new-loan a {
+            background: #1f9d55;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .new-loan a:hover {
+            background: #157a43;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th {
+            background: #2b5876;
+            color: white;
+            padding: 12px;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background: #f5f7fa;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        .returned { color: green; }
+        .overdue { color: red; }
+        .onloan { color: orange; }
+
+        .edit-btn {
+            background: #2b5876;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .edit-btn:hover {
+            background: #1f3f55;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>📋 Manage Loans</h1>
+
+    <div class="top-links">
+        <a href="/main">🏠 Home</a>
+        <a href="/logout">🚪 Log Out</a>
+    </div>
+
+    <div class="new-loan">
+        <a href="/loans/new">➕ Create New Loan</a>
+    </div>
+
+    <table>
+        <tr>
+            <th>Loan ID</th>
+            <th>Status</th>
+            <th>Loan Date</th>
+            <th>Return Date</th>
+            <th>Book</th>
+            <th>Member</th>
+            <th>Action</th>
+        </tr>
+
+        {% for l in loans %}
+        <tr>
+            <td>{{ l.Loan_ID }}</td>
+
+            <td class="status {% if l.Status == 'Returned' %}returned{% elif l.Status == 'Overdue' %}overdue{% else %}onloan{% endif %}">
+                {{ l.Status }}
+            </td>
+
+            <td>{{ l.Loan_Date }}</td>
+            <td>{{ l.Return_Date if l.Return_Date else '---' }}</td>
+            <td>{{ l.Title_Name }}</td>
+            <td>{{ l.MemberName }}</td>
+
+            <td>
+                <a class="edit-btn" href="/loans/edit/{{ l.Loan_ID }}">Edit</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="7" style="text-align:center; font-weight:bold; padding:20px;">No loans found.</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+</body>
+</html>
